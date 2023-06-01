@@ -34,17 +34,27 @@ namespace HangfireTest.Controllers
                 await _emailSender.SendEmailAsync(message);
                 return Ok();
 
-            } catch (Exception ex)
+            } 
+            catch (Exception ex)
             {
-                throw;
+                return Problem(ex.Message);
             }
         }
 
        [HttpGet("job")]
        public IActionResult Job()
         {
-            RecurringJob.AddOrUpdate(() => SendEmail(), Cron.Minutely, TimeZoneInfo.Local);
-            return Ok();
+            //RecurringJob.AddOrUpdate(() => SendEmail(), Cron.Minutely, TimeZoneInfo.Local);
+            try
+            {
+                RecurringJob.AddOrUpdate("Send Email Job", () => SendEmail(), Cron.Minutely);
+                return Ok();
+            }
+            catch(Exception ex)
+            {
+                return Problem(ex.Message);
+            }
+           
         }
     }
 }

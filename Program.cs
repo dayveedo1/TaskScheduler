@@ -25,10 +25,13 @@ builder.Services.AddHangfire(options =>
 
 builder.Services.AddHangfireServer();
 
+//Need to Map the Email Config to a Wrapper class and pass the values to the attributes of that class
+// currently the implementation is hard-coded in IEMailSenderImpl
 var emailConfig = builder.Configuration
         .GetSection("EmailConfiguration")
         .Get<EmailConfig>();
 builder.Services.AddSingleton(emailConfig);
+
 
 builder.Services.AddScoped<IEmailSender, IEmailSenderImpl>();
 
