@@ -8,10 +8,12 @@ namespace HangfireTest.Data
     public class IEmailSenderImpl : IEmailSender
     {
         private readonly EmailConfig _emailConfig;
+        private IConfiguration configuration;
 
-        public IEmailSenderImpl(IOptions<EmailConfig> config)
+        public IEmailSenderImpl(IOptions<EmailConfig> config, IConfiguration configuration)
         {
             this._emailConfig = config.Value;
+            this.configuration = configuration;
         }
 
         public async Task SendEmailAsync(Message message)

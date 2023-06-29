@@ -1,10 +1,13 @@
 using Hangfire;
+using HangfireBasicAuthenticationFilter;
 using HangfireTest;
 using HangfireTest.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var config = builder.Configuration;
 
 // Add services to the container.
 
@@ -72,7 +75,18 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
-app.UseHangfireDashboard("/dashboard");
+app.UseHangfireDashboard("/hangfire", new DashboardOptions
+{
+    DashboardTitle = "Hangfire Job",
+    Authorization = new[]
+    {
+       new HangfireCustomBasicAuthenticationFilter
+       {
+           User = config.GetSection("HangFireSettings:Username").Value,
+           Pass = config.GetSection("HangFireSettings:Password").Value,
+       }
+    }
+});
 
 //app.UseHangfireServer();
 
