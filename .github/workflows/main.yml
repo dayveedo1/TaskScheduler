@@ -26,4 +26,4 @@ jobs:
         run: dotnet build ./HangfireTest.sln --configuration Release --no-restore
 
       - name: Publish
-        run: dotnet publish ./HangfireTest.sln configuration Release --no-build
+        run: dotnet publish ./HangfireTest.sln --configuration Release --no-build
